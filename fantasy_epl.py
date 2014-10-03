@@ -3,8 +3,6 @@ __author__ = 'Robbie'
 __author__ = 'Robbie Lynch'
 
 from bs4 import BeautifulSoup
-from player import Player
-from club import Club
 import urllib2
 
 

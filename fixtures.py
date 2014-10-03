@@ -1,8 +1,6 @@
 __author__ = 'Robbie'
 
 from bs4 import BeautifulSoup
-from player import Player
-from club import Club
 import urllib2
 
 
