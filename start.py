@@ -1,16 +1,6 @@
-__author__ = 'Robbie'
-
 import fixtures
 from club import Club, get_clubs_objects, get_club_rank
 import player
-import copy
-
-#set week number
-#create fixtures
-#create clubs
-#create players
-
-
 
 # create players
 def create_players():
@@ -20,30 +10,6 @@ def create_players():
     """
     player_list = player.get_players_list()
     return player_list
-
-
-#add players to clubs
-def add_players_to_clubs(player_list, club_list):
-    ARSENAL = "Arsenal"
-    ASTON = "Aston Villa"
-    CHELSEA = "Chelsea"
-    CRYSTAL = "Crystal Palace"
-    BURNLEY = "Burnley"
-    EVERTON = "Everton"
-    HULL = "Hull City"
-    LEICESTER = "Leicester City"
-    LIVERPOOL = "Liverpool"
-    MAN_UTD = "Manchester United"
-    MAN_CITY = "Manchester City"
-    NEWCASTLE = "Newcastle United"
-    QPR = "Queens Park Rangers"
-    SWANSEA = "Swansea City"
-    SUNDERLAND = "Sunderland"
-    SOUTHAMPTON = "Southampton"
-    SPURS = "Tottenham Hotspur"
-    STOKE = "Stoke City"
-    WEST_HAM = "West Ham United"
-    WEST_BROM = "West Bromwich Albion"
 
 
 def calc_player_scores(player_list, clubs_list):
@@ -70,51 +36,57 @@ def calc_player_scores(player_list, clubs_list):
 
 
 def start(week_num):
-    #week number
+    # Week Number
     week_number = week_num
 
-    #fixtures
+    # Fixtures #
     home_teams, away_teams = fixtures.get_fixtures(week_number)
 
-    #create clubs
+    # Create clubs #
     clubs_list = get_clubs_objects()
 
-    #set club fixture_is_home
+    # Set club fixture_is_home #
     for c in clubs_list:
         if(c.name in home_teams):
-            #set home fixture
+            # Set home fixture #
             c.is_next_match_home = True
         else:
-            #set away fixture
+            # Set away fixture #
             c.is_next_match_home = False
 
-    #set next opp and rank
+    # Set next opp and rank #
     for club in clubs_list:
         if club.is_next_match_home:
-            #club is home team
+            # Club is home team #
             index_of_club_in_home_team_list = home_teams.index(club.name)
             next_opp = away_teams[index_of_club_in_home_team_list]
             club.next_opp_team_name = next_opp
-            #set next opp rank
+            # Set next opp rank #
             club.next_opp_rank = get_club_rank(clubs_list, next_opp)
         else:
-            #club is away team
+            # Club is away team #
             index_of_club_in_away_team_list = away_teams.index(club.name)
             next_opp = home_teams[index_of_club_in_away_team_list]
             club.next_opp_team_name = next_opp
-            #set next opp rank
+            # Set next opp rank #
             club.next_opp_rank = get_club_rank(clubs_list, next_opp)
 
-    #create players
+    # Create players #
     player_list = create_players()
 
-    #Calculate player scores
+    # Calculate player scores #
     player_list = calc_player_scores(player_list, clubs_list)
 
-    #output highest predictions
+    # Output highest predictions #
     import operator
     player_list.sort(key=operator.attrgetter("prediction"), reverse=True)
 
-    return player_list
+    # Output Markdown Table #
+    print("| Player Name | Club | Position | Prediction |")
+    print("|---|---|----|----|")
 
-
+    for p in player_list:
+        try:
+            print("| " + p.name + " | " + p.club + " | " + p.position + " |" + str(p.prediction) + " |")
+        except Exception, e:
+            pass

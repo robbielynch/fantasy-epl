@@ -1,7 +1,6 @@
 __author__ = 'Robbie'
 
 from bs4 import BeautifulSoup
-from data import sample_html
 from player import Player
 from club import Club
 import urllib2
@@ -35,28 +34,37 @@ def normalise_team_name(team_name):
 
 
 def get_fixtures(week_num):
-    # get html
+    """
+    Get the provided weeks fixtures. Can be used to determine next
+    opposition ranking and home/away advantage
+    :param week_num: The week number that fixtures are required for
+    :return: A tuple containing a list of teams playing at home
+    and a list of teams playing away. If two teams have the same index
+    it means they are playing one another that week.
+    """
+    # Get HTML #
     fix_url = "http://fantasy.premierleague.com/fixtures/" + str(week_num)
     usock = urllib2.urlopen(fix_url)
     html = usock.read()
     usock.close()
 
-    # get soup
+    # Get soup object #
     soup = BeautifulSoup(html)
 
-    # get fixture table
-    resultset = soup.find('table', {'class':"ismFixtureTable"}).find("tbody").find_all("tr")
+    # Get fixture table #
+    rows_result_set = soup.find('table', {'class':"ismFixtureTable"}).find("tbody").find_all("tr")
 
     home = []
     away = []
 
-    for row in resultset:
+    # Extract fixtures #
+    for row in rows_result_set:
         cells = row.find_all("td")
 
         h = cells[1].get_text().encode('ascii','ignore').strip()
         a = cells[5].get_text().encode('ascii','ignore').strip()
 
-        # Normalise the team name to match up with other sources
+        # Normalise the team name to match up with other sources #
         h = normalise_team_name(h)
         a = normalise_team_name(a)
 

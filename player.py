@@ -35,11 +35,11 @@ class Player(object):
 
 
 
-
-
-
-
 def get_players_list():
+    """
+    Gets all the player data from the premier league website
+    :return: List of player objects
+    """
     soup = fantasy_epl.get_soup_object()
     resultset = soup.find('table', {'class':"players-table"}).find("tbody").find_all("tr")
 

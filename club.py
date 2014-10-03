@@ -4,17 +4,22 @@ import urllib2
 
 
 def get_clubs_objects():
+    """
+    Crawls and extract all club information from the
+    premier league website.
+    :return: List of club objects
+    """
     club_ranking_table_url = "http://www.premierleague.com/en-gb/players/ea-sports-ppi-club-ranking.html"
     club_table_html = urllib2.urlopen(club_ranking_table_url)
     soup = fantasy_epl.extract_soup(club_table_html.read())
-    resultset = soup.find('table', {'class':"players-table"}).find_all("tr")
+    tr_result_set = soup.find('table', {'class':"players-table"}).find_all("tr")
 
-    clubs = []
+    club_list = []
 
-    for row in resultset:
+    # Extract club data from each row #
+    for row in tr_result_set:
 
         cells = row.find_all("td")
-
         if(cells):
             #rank
             rank = cells[0].get_text().encode('ascii','ignore').strip(' \n\r\t')
@@ -23,13 +28,19 @@ def get_clubs_objects():
 
             #Create club
             c = Club(int(rank), name)
-            clubs.append(c)
+            club_list.append(c)
 
-    return clubs
+    return club_list
 
 
 
 def get_club_rank(clubs_list, club_name):
+    """
+    Gets the current ranking of a club (1 - 20)
+    :param clubs_list: List of club objects
+    :param club_name: string, club name
+    :return: int, the club rank
+    """
     for i, c in enumerate(clubs_list):
         if club_name == c.name:
             return c.rank
