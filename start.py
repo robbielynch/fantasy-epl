@@ -82,11 +82,11 @@ def start(week_num):
     player_list.sort(key=operator.attrgetter("prediction"), reverse=True)
 
     # Output Markdown Table #
-    print("| Player Name | Club | Position | Prediction |")
-    print("|---|---|----|----|")
+    print("| Rank | Player Name | Club | Position | Prediction |")
+    print("|------|-------------|------|----------|------------|")
 
-    for p in player_list:
+    for i, p in enumerate(player_list):
         try:
-            print("| " + p.name + " | " + p.club + " | " + p.position + " |" + str(p.prediction) + " |")
+            print("| " + str(i + 1) + " | " + p.name + " | " + p.club + " | " + p.position + " |" + str(p.prediction) + " |")
         except Exception, e:
             pass
