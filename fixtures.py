@@ -59,15 +59,18 @@ def get_fixtures(week_num):
     for row in rows_result_set:
         cells = row.find_all("td")
 
-        h = cells[1].get_text().encode('ascii','ignore').strip()
-        a = cells[5].get_text().encode('ascii','ignore').strip()
+        try:
+            h = cells[1].get_text().encode('ascii','ignore').strip()
+            a = cells[5].get_text().encode('ascii','ignore').strip()
 
-        # Normalise the team name to match up with other sources #
-        h = normalise_team_name(h)
-        a = normalise_team_name(a)
+            # Normalise the team name to match up with other sources #
+            h = normalise_team_name(h)
+            a = normalise_team_name(a)
 
-        home.append(h)
-        away.append(a)
+            home.append(h)
+            away.append(a)
+        except:
+            pass
 
     return home, away
 

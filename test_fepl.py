@@ -18,7 +18,7 @@ class TestFEPL(TestCase):
         self.assertIsNot(player_list, [])
 
     def test_get_fixtures(self):
-        home, away = fixtures.get_fixtures(7)
+        home, away = fixtures.get_fixtures(8)
         self.assertIsNotNone(home)
         self.assertIsNotNone(away)
 
